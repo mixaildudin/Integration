@@ -7,19 +7,19 @@
 	<script type="text/javascript" src="scripts/view.js"></script>
 	<script type="text/javascript" src="scripts/obj_function.js"></script>
 	<script type="text/javascript" src="scripts/flot/jquery.js"></script>
-	<script type="text/javascript" src="scripts/flot/jquery.flot.js"></script>	
+	<script type="text/javascript" src="scripts/flot/jquery.flot.js"></script>
 	<title>Численное интегрирование</title>
 	<meta charset="UTF-8"/>
-	
-	<script>
+
+	<script type="text/javascript">
 		$(document).ready(function() {
 			alert(1);
 			var a = new Integrator( 1 );
 			var o = new ObjFunc(2,4,6,1,1);
 			a.setObjFunc(o);
 			a.setDelta( 1e-4 );
-			a.setIntgrInterval(0, 1);
-			a.getValue();
+			a.setIntegrInterval(0, 1);
+			console.log(a.getIntegralValue());
 		});
 	</script>
 </head>

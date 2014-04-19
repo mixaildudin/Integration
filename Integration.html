@@ -13,7 +13,6 @@
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-			alert(1);
 			var a = new Integrator( 1 );
 			var o = new ObjFunc(2,4,6,1,1);
 			a.setObjFunc(o);
@@ -28,13 +27,12 @@
         <div id="plot"></div>
         <table id="controls" cellpadding="5" cellspacing="0">
             <tr>
-                <td width="100%" align="center" class="controls_td">
-                    max( r(x) ) = <b><span id="max_rx" /></b><br/>
-                    при x = <b><span id="max_rx_x" /></b>
+                <td width="100%" align="center" class="n_max_td">
+                    max{ n(<span id="parameter_of_integr" />) } = <b><span id="max_n" /></b><br/>
                 </td>
             </tr>
             <tr>
-                <td class="controls_td">
+                <td>
                     <table id="controls_table" cellspacing="0" cellpadding="0">
                         <tr>
                             <td align="center">
@@ -51,9 +49,41 @@
                                 A: <input id="windowA_input" type="text" value="0" /><br/>
                                 B: <input id="windowB_input" type="text" value="3" /><br/>
                                 C: <input id="windowC_input" type="text" value="-15" /><br/>
-                                D: <input id="windowD_input" type="text" value="15" /><br/>
+                                D: <input id="windowD_input" type="text" value="15" /><br/><br/>
                             </td>
                         </tr>
+						<tr>
+							<td align="left">
+								<b>Параметры интегрирования:</b>
+							</td>
+						</tr>
+						<tr>
+							<td align="center">
+								Начальное число разбиений:<br/><input id="n_input" type="range" min="1" max="500" step="1" value="20" />
+								<b><span id="n_value">20</span></b><br/><br/>
+
+								<script type="text/javascript">
+									window.onload = function() {
+										getEl('n_value').innerHTML = getEl('n_input').value;
+									}
+									getEl('n_input').onchange = function() {
+										getEl('n_value').innerHTML = this.value;
+									}
+								</script>
+							</td>
+						</tr>
+						<tr>
+							<td align="center">
+								Фиксированный параметр:<br/>
+								<table width="20%">
+									<tr><td><input type="radio" name="fixed_param" checked="checked" id="alpha_fixed" /> α</td></tr>
+									<tr><td><input type="radio" name="fixed_param" id="beta_fixed" /> β</td></tr>
+									<tr><td><input type="radio" name="fixed_param" id="gamma_fixed" /> γ</td></tr>
+									<tr><td><input type="radio" name="fixed_param" id="delta_fixed" /> δ</td></tr>
+									<tr><td><input type="radio" name="fixed_param" id="eps_fixed" /> ε<br/><br/></td></tr>
+								</table>
+							</td>
+						</tr>
                         <tr>
                             <td align="left">
                                 <b>Параметры функции:</b>
@@ -61,42 +91,43 @@
                         </tr>
                         <tr>
                             <td align="center">
-                                α: <input id="alpha_input" type="text" value="2" /><br/>
-                                β: <input id="beta_input" type="text" value="4" /><br/>
-                                γ: <input id="gamma_input" type="text" value="6" /><br/>
-                                δ: <input id="delta_input" type="text" value="1" /><br/>
-                                ε: <input id="eps_input" type="text" value="1" /><br/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="left">
-                                <b>Параметры интерполяции:</b>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center">
-                                Узлов: <input id="n_input" type="range" min="4" max="100" step="2" value="4" />
-                                <span id="n_value">1</span>
+                                	α: <input id="alpha_input" name="param_input" type="text" value="2" /><br/>
+									β: <input id="beta_input" name="param_input" type="text" value="4" /><br/>
+									γ: <input id="gamma_input" name="param_input" type="text" value="6" /><br/>
+									δ: <input id="delta_input" name="param_input" type="text" value="1" /><br/>
+									ε: <input id="eps_input" name="param_input" type="text" value="1" /><br/>
+								<script type="text/javascript">
+									$('input[name="fixed_param"]').change( disableFixedParamInput );
+									$(document).ready( disableFixedParamInput );
 
-                                <script type="text/javascript">
-                                    window.onload = function() {
-                                        getEl('n_value').innerHTML = getEl('n_input').value;
-                                    }
-                                    getEl('n_input').onchange = function() {
-                                        getEl('n_value').innerHTML = this.value;
-                                    }
-                                </script>
+									function disableFixedParamInput() {
+										$('input[name="param_input"]').prop('disabled', false); //разблокировать все инпуты
+
+										/*заблокировать фиксированный*/
+										if( getEl('alpha_fixed').checked )
+											getEl('alpha_input').disabled = 'disabled';
+										else if( getEl('beta_fixed').checked )
+											getEl('beta_input').disabled = 'disabled';
+										else if( getEl('gamma_fixed').checked )
+											getEl('gamma_input').disabled = 'disabled';
+										else if( getEl('delta_fixed').checked )
+											getEl('delta_input').disabled = 'disabled';
+										else if( getEl('eps_fixed').checked )
+											getEl('eps_input').disabled = 'disabled';
+									};
+								</script>
+								<br/><br/>
                             </td>
                         </tr>
                         <tr>
                             <td align="left">
-                                <b>Параметры дифференцирования:</b>
+                                <b>Максимально допустимая погрешность:</b>
                             </td>
                         </tr>
                         <tr>
                             <td align="center">
                                 Δ:
-                                <select id="delta_deriv_input" type="text">
+                                <select id="delta_error_input" type="text">
                                     <option value="1">1</option>
                                     <option value="1e-1">0.1</option>
                                     <option value="1e-2">0.01</option>
@@ -112,26 +143,6 @@
                             <td align="center">
                                 <br/>
                                 <input id="refresh_button" type="button" value="Перерисовать" /><br/><br/>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <table id="checkboxes" cellspacing="0" width="100%">
-                        <tr>
-                            <td align="left">
-                                <b>Отображать графики</b><br/>
-                            </td>
-                        </tr>
-                        <tr width="100%">
-                            <td align="left" width="100%">
-                                <input id="draw_f" type="checkbox" class="checkb" checked="checked" /> f(x)<br/>
-                                <input id="draw_p" type="checkbox" class="checkb" checked="checked" /> p(x)<br/>
-                                <input id="draw_r" type="checkbox" class="checkb" checked="checked" /> r(x)<br/>
-                                <input id="draw_fd" type="checkbox" class="checkb" checked="checked" /> ∂f(x)<br/>
-                                <input id="draw_pd" type="checkbox" class="checkb" checked="checked" /> ∂p(x)<br/>
                             </td>
                         </tr>
                     </table>

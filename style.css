@@ -30,7 +30,7 @@ body {
     height: 100%;
 }
 
-.controls_td {
+.n_max_td {
     border-bottom: 1px solid black;
 }
 
@@ -40,7 +40,7 @@ body {
 
 #n_input {
     position: relative;
-    width: 70%;
+    width: 100%;
 }
 
 input {

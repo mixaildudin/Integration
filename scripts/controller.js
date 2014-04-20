@@ -21,7 +21,7 @@ function Controller() {
 		};
 
 		integrator.setInitialN( +getEl('n_input').value )
-		integrator.setIntegrInterval( integrWindow.A, integrWindow.B );
+		integrator.setIntegrInterval( +getEl('integrA_input').value, +getEl('integrB_input').value );
 		integrator.setDelta( +getEl('delta_error_input').value );
 
 		fixedParamValues = prepareFixedParamValues();
@@ -90,7 +90,7 @@ function Controller() {
 	function prepareFixedParamValues() {
 		var windowA = +getEl('windowA_input').value,
 			windowB = +getEl('windowB_input').value;
-		var step = (windowB - windowA) / $('#plot').width();
+		var step = (windowB - windowA) / ($('#plot').width() * 0.8); //лютый подгон, чтобы не считать лишние точки
 		var result = [];
 		for ( var i = windowA; i < windowB ; i += step )
 			result.push(i);

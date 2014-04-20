@@ -1,16 +1,17 @@
 /**
 *@constructor Создает объект Интегратор
-*@param initialN Начальное число разбиений промежутка
 */
-function Integrator( initialN ) {
+function Integrator() {
 	var objFunc;
 	var delta; //погрешность
+	var initialN = 1;
 	var integrIntervalA, integrIntervalB;
-	var maxAppropriateN = -Infinity;
+	var maxAppropriateN;
 
 	this.getIntegralValue = function() {
+		maxAppropriateN = initialN;
 		return countIntegralValue();
-	}
+	};
 
 	/**
 	 * Функция для подсчета значения интеграла с учетом требуемой точности по заданному отрезку
@@ -20,9 +21,9 @@ function Integrator( initialN ) {
 		var resultForN = -Infinity,
 			resultFor2N = +Infinity;
 		var appropriateN; //число разбиений, реализующих заданную точность
-		var n = initialN;
+		var n = maxAppropriateN;
 
-		while( Math.abs( resultForN - resultFor2N ) > delta ) {
+		while( Math.abs( resultForN.toFixed(4) - resultFor2N.toFixed(4) ) > delta ) {
 			resultForN = rectFormula( n );
 			resultFor2N = rectFormula( 2*n );
 
@@ -48,8 +49,7 @@ function Integrator( initialN ) {
 
 		for( var i = 0; i < n; i++ ) {
 			x = prevX + h;
-			var middle = ( x + prevX ) / 2;
-			result += h * objFunc.getValue( middle );
+			result += h * objFunc.getValue( (x + prevX)/2 );
 			prevX = x;
 		}
 
@@ -63,7 +63,6 @@ function Integrator( initialN ) {
 	function findMaxAppropriateN( n ) {
 		if( n >= maxAppropriateN )
 			maxAppropriateN = n;
-		return;
 	}
 
 	this.getMaxAppropriateN = function() {
@@ -83,7 +82,7 @@ function Integrator( initialN ) {
 		integrIntervalB = B;
 	};
 
-	this.setN = function( n ) {
+	this.setInitialN = function( n ) {
 		initialN = n;
 	};
 }

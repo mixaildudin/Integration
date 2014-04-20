@@ -6,6 +6,7 @@
 	<script type="text/javascript" src="scripts/integrator.js"></script>
 	<script type="text/javascript" src="scripts/view.js"></script>
 	<script type="text/javascript" src="scripts/obj_function.js"></script>
+	<script type="text/javascript" src="scripts/controller.js"></script>
 	<script type="text/javascript" src="scripts/flot/jquery.js"></script>
 	<script type="text/javascript" src="scripts/flot/jquery.flot.js"></script>
 	<title>Численное интегрирование</title>
@@ -13,12 +14,10 @@
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var a = new Integrator( 1 );
-			var o = new ObjFunc(2,4,6,1,1);
-			a.setObjFunc(o);
-			a.setDelta( 1e-4 );
-			a.setIntegrInterval(0, 1);
-			console.log(a.getIntegralValue());
+			var controller = new Controller();
+			controller.start();
+
+			$('#refresh_button').click(function() { controller.start() });
 		});
 	</script>
 </head>
@@ -28,7 +27,7 @@
         <table id="controls" cellpadding="5" cellspacing="0">
             <tr>
                 <td width="100%" align="center" class="n_max_td">
-                    max{ n(<span id="parameter_of_integr" />) } = <b><span id="max_n" /></b><br/>
+                    max{ n(<span id="parameter_of_integr"></span>) } = <b><span id="max_n"></span></b><br/>
                 </td>
             </tr>
             <tr>
@@ -47,7 +46,7 @@
                         <tr>
                             <td align="center">
                                 A: <input id="windowA_input" type="text" value="0" /><br/>
-                                B: <input id="windowB_input" type="text" value="3" /><br/>
+                                B: <input id="windowB_input" type="text" value="1" /><br/>
                                 C: <input id="windowC_input" type="text" value="-15" /><br/>
                                 D: <input id="windowD_input" type="text" value="15" /><br/><br/>
                             </td>

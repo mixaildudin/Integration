@@ -57,17 +57,17 @@ function Controller() {
 	 * Забрать введенные параметры функции
 	 */
 	function retrieveFormParameters() {
-		alpha_checked = getEl('alpha_fixed').checked,
-		beta_checked = getEl('beta_fixed').checked,
-		gamma_checked = getEl('gamma_fixed').checked,
-		delta_checked = getEl('delta_fixed').checked,
+		alpha_checked = getEl('alpha_fixed').checked;
+		beta_checked = getEl('beta_fixed').checked;
+		gamma_checked = getEl('gamma_fixed').checked;
+		delta_checked = getEl('delta_fixed').checked;
 		eps_checked = getEl('eps_fixed').checked;
 
-		alpha_input = getEl('alpha_input').value,
-		beta_input = getEl('beta_input').value,
-		gamma_input = getEl('gamma_input').value,
-		delta_input = getEl('delta_input').value,
-		eps_input = getEl('eps_input').value;
+		alpha_input = +getEl('alpha_input').value;
+		beta_input = +getEl('beta_input').value;
+		gamma_input = +getEl('gamma_input').value;
+		delta_input = +getEl('delta_input').value;
+		eps_input = +getEl('eps_input').value;
 	}
 
 	/**
@@ -77,11 +77,11 @@ function Controller() {
 	 */
 	function createObjFunction( fixed ) {
 
-		var alpha = alpha_checked ? alpha_input : fixed;
-		var beta = beta_checked ? beta_input : fixed;
-		var gamma = gamma_checked ? gamma_input : fixed;
-		var delta = delta_checked ? delta_input : fixed;
-		var eps = eps_checked ? eps_input : fixed;
+		var alpha = alpha_checked ? fixed : alpha_input;
+		var beta = beta_checked ? fixed : beta_input;
+		var gamma = gamma_checked ? fixed : gamma_input;
+		var delta = delta_checked ? fixed : delta_input;
+		var eps = eps_checked ? fixed : eps_input;
 
 		return new ObjFunc( alpha, beta, gamma, delta, eps );
 

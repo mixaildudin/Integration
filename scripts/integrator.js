@@ -18,19 +18,33 @@ function Integrator() {
 	 * @returns {number} Значение интеграла
 	 */
 	function countIntegralValue() {
+		var MAX_COUNTED_INTEGRALS = 500;
+
 		var resultForN = -Infinity,
 			resultFor2N = +Infinity;
 		var appropriateN; //число разбиений, реализующих заданную точность
 		var n = maxAppropriateN;
-
-		while( Math.abs( resultForN.toFixed(4) - resultFor2N.toFixed(4) ) > delta ) {
-			resultForN = rectFormula( n );
+		
+		/** Жесть для оптимизации */
+		var countedIntegrals = new Array( MAX_COUNTED_INTEGRALS ),
+			offset = maxAppropriateN;			
+		for( var i = 0; i < countedIntegrals.length; i++ )
+			countedIntegrals[i] = null;
+		/**/
+		
+		while( Math.abs( resultForN - resultFor2N ) > delta ) {
+			if( countedIntegrals[ n - offset ] != null )
+				resultForN = countedIntegrals[ n - offset ];
+			else
+				resultForN = rectFormula( n );
+				
 			resultFor2N = rectFormula( 2*n );
+			countedIntegrals[ 2*n - offset] = resultFor2N;
 
 			appropriateN = n;
 			n++;
 		}
-
+		
 		findMaxAppropriateN( appropriateN );
 
 		return resultForN;
